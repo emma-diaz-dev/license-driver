@@ -1,4 +1,12 @@
 {
+  "help":[
+    {"param":"-l","meaning":"license","example":"MIT"},
+    {"param":"-y","meaning":"year","example":"2018"},
+    {"param":"-a","meaning":"author","example":"Juan Emmanuel Díaz"},
+    {"param":"-dp","meaning":"destination path","example":"my-license/LICENSE"},
+    {"param":"-ni","meaning":"not internet","example":"----"},
+    {"param":"-f","meaning":"force, delete actually LICENSE","example":"----"}
+  ],
   "default":{
     "useInternet":true,
     "notForce":true,

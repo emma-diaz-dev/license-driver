@@ -3,7 +3,7 @@ import {getFullParams} from 'scriptparams';
 import fs from 'fs';
 import configJson from '../config/settings.json';
 import {sep} from 'path';
-
+import {jsonToPrettyTable} from 'showtables';
 const replaceYear = (year,str) => str.replace(regY,year);
 const replaceName = (name,str) => str.replace(regA,name);
 const convertLicText = licText => {
@@ -26,36 +26,46 @@ const localTempalte = () => {
 //a: author
 //dp: destination path
 //f: force (not control if file exist)
-let license = configJson.default.license,
-useInternet = configJson.default.useInternet,
-url = configJson.licenses[license].url,
-regY = new RegExp(configJson.licenses[license].regexp.y),
-regA = new RegExp(configJson.licenses[license].regexp.a,'g'),
-y = '',
-a = '',
-dp = process.cwd() +sep+ configJson.default.fileName,
-nf = configJson.default.notForce,
-l = '';
+//ni: not internet
+//l: license code, example => MIT, ISC, etc
 const params = getFullParams();
-if(params.l){
-  let lic = params.l.trim();
-  if(configJson.licenses[lic]){
-    url = configJson.licenses[lic].url,
-    regY = new RegExp(configJson.licenses[lic].regexp.y),
-    regA = new RegExp(configJson.licenses[lic].regexp.a,'g');
+if(params.h != undefined){
+jsonToPrettyTable(configJson.help,'blue','white');
+}else {
+  let license = configJson.default.license,
+  useInternet = configJson.default.useInternet,
+  url = configJson.licenses[license].url,
+  regY = new RegExp(configJson.licenses[license].regexp.y),
+  regA = new RegExp(configJson.licenses[license].regexp.a,'g'),
+  y = '',
+  a = '',
+  dp = process.cwd() +sep+ configJson.default.fileName,
+  nf = configJson.default.notForce,
+  l = '';
+  if(params.l){
+    let lic = params.l.trim();
+    if(configJson.licenses[lic]){
+      url = configJson.licenses[lic].url,
+      regY = new RegExp(configJson.licenses[lic].regexp.y),
+      regA = new RegExp(configJson.licenses[lic].regexp.a,'g');
+    }
+  }
+  if(params.y) y = params.y.replace(/\'|\"/g,"").replace(/\/|\#|\\/g,'-');
+  else if(configJson.default.y)y = configJson.default.y;
+  else y = new Date().getFullYear().toString();
+  if(params.a) a = params.a.replace(/\'|\"/g,"");
+  else if(configJson.default.a)a = configJson.default.a;
+  if(params.dp) dp = process.cwd() +'/'+ params.dp.replace(/\'|\"/g,"");
+  if(params.f != undefined) nf = false;
+  if(params.ni!= undefined) useInternet = false;
+  if(!useInternet)localTempalte();
+  else getLicense(url)
+        .then( licText =>{
+          fs.writeFileSync(`${__dirname}/../lic-templates/${license}`,licText,'utf8');
+          console.log('get License with Internet');
+          convertLicText(licText)
+        })
+        .catch( err => {
+          localTempalte();
+        });
 }
-}
-if(params.y) y = params.y.replace(/\'|\"/g,"").replace(/\/|\#|\\/g,'-');
-if(params.a) a = params.a.replace(/\'|\"/g,"");
-if(params.dp) dp = process.cwd() +'/'+ params.dp.replace(/\'|\"/g,"");
-if(params.f != undefined) nf = false;
-if(!useInternet)localTempalte();
-else getLicense(url)
-      .then( licText =>{
-        fs.writeFileSync(`${__dirname}/../lic-templates/${license}`,licText,'utf8');
-        console.log('get License with Internet');
-        convertLicText(licText)
-      })
-      .catch( err => {
-        localTempalte();
-      });

@@ -1,6 +1,6 @@
 {
   "name": "license-driver",
-  "version": "0.2.0",
+  "version": "0.4.0",
   "description": "",
   "main": "lib/index.js",
   "scripts": {
@@ -28,7 +28,8 @@
   "dependencies": {
     "cheerio": "^1.0.0-rc.2",
     "request": "^2.85.0",
-    "scriptparams": "^1.0.0"
+    "scriptparams": "^1.0.0",
+    "showtables": "^2.0.3"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
