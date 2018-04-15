@@ -1,31 +1,64 @@
-import {getLicense,replaceYear,replaceName} from './license-driver.js';
+import {getLicense} from './license-driver.js';
 import {getFullParams} from 'scriptparams';
 import fs from 'fs';
+import configJson from '../config/settings.json';
+import {sep} from 'path';
+
+const replaceYear = (year,str) => str.replace(regY,year);
+const replaceName = (name,str) => str.replace(regA,name);
+const convertLicText = licText => {
+  if(y && y.length>0)licText = replaceYear(y,licText);
+  if(a && a.length>0)licText = replaceName(a,licText);
+  // console.log(result)
+  if(nf && fs.existsSync(dp) && fs.statSync(dp).isFile()){
+    console.log('File exist!!');
+  }else{
+    fs.writeFileSync(dp,licText,'utf8');
+    console.log('File created!!');
+  }
+};
+
+const localTempalte = () => {
+  console.log('get License with Local Templates');
+  let licText = fs.readFileSync(`./lic-templates/${license}`).toString();
+  // console.log(licText);
+  convertLicText(licText);
+};
 
 //y: year
 //a: author
 //dp: destination path
 //f: force (not control if file exist)
-let url = 'https://opensource.org/licenses/MIT',
+let license = configJson.default.license,
+useInternet = configJson.default.useInternet,
+url = configJson.licenses[license].url,
+regY = new RegExp(configJson.licenses[license].regexp.y),
+regA = new RegExp(configJson.licenses[license].regexp.a,'g'),
 y = '',
 a = '',
-dp = process.cwd() + '/LICENSE',
-nf = true;
+dp = process.cwd() +sep+ configJson.default.fileName,
+nf = configJson.default.notForce,
+l = '';
 // console.log(__dirname);
 // console.log(process.cwd());
 const params = getFullParams();
-if(params.y) y = params.y.replace(/\'|\"/g,"");
+if(params.l && configJson.licenses[params.l.toUpperCase()]){
+  license = params.l.toUpperCase(),
+  url = configJson.licenses[license].url,
+  regY = new RegExp(configJson.licenses[license].regexp.y),
+  regA = new RegExp(configJson.licenses[license].regexp.a,'g');
+}
+if(params.y) y = params.y.replace(/\'|\"/g,"").replace(/\/|\#|\\/g,'-');
 if(params.a) a = params.a.replace(/\'|\"/g,"");
 if(params.dp) dp = process.cwd() +'/'+ params.dp.replace(/\'|\"/g,"");
 if(params.f != undefined) nf = false;
-getLicense(url).then( result =>{
-  if(y && y.length>0)result = replaceYear(y,result);
-  if(a && a.length>0)result = replaceName(a,result);
-  // console.log(result)
-  if(nf && fs.existsSync(dp) && fs.statSync(dp).isFile()){
-    console.log('File exist!!');
-  }else{
-    fs.writeFileSync(dp,result,'utf8');
-    console.log('File created!!');
-  }
-});
+if(!useInternet)localTempalte();
+else getLicense(url)
+      .then( licText =>{
+        fs.writeFileSync(`./lic-templates/${license}`,licText,'utf8');
+        console.log('get License with Internet');
+        convertLicText(licText)
+      })
+      .catch( err => {
+        localTempalte();
+      });

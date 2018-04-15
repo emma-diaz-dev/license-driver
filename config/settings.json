@@ -1,15 +1,16 @@
 {
   "default":{
     "useInternet":true,
-    "replaceLicenseFile":false,
-    "fileLicenseName":"LICENSE"
+    "notForce":true,
+    "fileName":"LICENSE",
+    "license":"MIT"
   },
   "licenses":{
     "MIT":{
       "url":"https://opensource.org/licenses/MIT",
       "regexp":{
-        "y":"",
-        "a":""
+        "y":"\\<YEAR\\>",
+        "a":"\\<COPYRIGHT\\sHOLDER\\>"
       }
     },
     "ISC":{
@@ -17,6 +18,13 @@
       "regexp":{
         "y":"\\<YEAR\\>",
         "a":"\\<OWNER\\>"
+      }
+    },
+    "NTP":{
+      "url":"https://opensource.org/licenses/NTP",
+      "regexp":{
+        "y":"\\(From\\s4\\-digit\\-year\\)\\-\\(To\\s4\\-digit\\-year\\)",
+        "a":"\\(CopyrightHoldersName\\)|\\(TrademarkedName\\)"
       }
     }
   }
