@@ -1,0 +1,39 @@
+{
+  "name": "license-driver",
+  "version": "0.1.0",
+  "description": "",
+  "main": "lib/index.js",
+  "scripts": {
+    "build": "babel src -d lib"
+  },
+  "bin": {
+    "licence-driver": "lib/index.js"
+  },
+  "preferGlobal": "true",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/audio35444/license-driver.git"
+  },
+  "keywords": [
+    "MIT",
+    "license"
+  ],
+  "author": "Juan Emmanuel Díaz <juaninsis@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/audio35444/license-driver/issues"
+  },
+  "homepage": "https://github.com/audio35444/license-driver#readme",
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.2",
+    "request": "^2.85.0",
+    "scriptparams": "^1.0.0"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "chai": "^4.1.2",
+    "mocha": "^5.1.0"
+  }
+}

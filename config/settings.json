@@ -1,0 +1,23 @@
+{
+  "default":{
+    "useInternet":true,
+    "replaceLicenseFile":false,
+    "fileLicenseName":"LICENSE"
+  },
+  "licenses":{
+    "MIT":{
+      "url":"https://opensource.org/licenses/MIT",
+      "regexp":{
+        "y":"",
+        "a":""
+      }
+    },
+    "ISC":{
+      "url":"https://opensource.org/licenses/ISC",
+      "regexp":{
+        "y":"\\<YEAR\\>",
+        "a":"\\<OWNER\\>"
+      }
+    }
+  }
+}
