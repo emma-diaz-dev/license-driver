@@ -3,12 +3,12 @@
 with lic-mit is very easy add the file LICENSE with origin MIT LICENSE
 
 ```
-npm i -g lic-mit
+npm i -g license-driver
 ```
 
 ## Run
 
 ```js
-licmit -h
-licmit -y 2018 -a "Juan Emmanuel Díaz"
+addlic -h
+addlic -y 2018 -a "Juan Emmanuel Díaz"
 ```
