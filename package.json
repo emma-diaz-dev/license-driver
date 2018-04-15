@@ -4,7 +4,8 @@
   "description": "",
   "main": "lib/index.js",
   "scripts": {
-    "build": "babel src -d lib"
+    "build": "babel src -d lib",
+    "test": "babel src -d lib & node ."
   },
   "bin": {
     "addlic": "lib/index.js"

@@ -9,7 +9,6 @@ const replaceName = (name,str) => str.replace(regA,name);
 const convertLicText = licText => {
   if(y && y.length>0)licText = replaceYear(y,licText);
   if(a && a.length>0)licText = replaceName(a,licText);
-  // console.log(result)
   if(nf && fs.existsSync(dp) && fs.statSync(dp).isFile()){
     console.log('File exist!!');
   }else{
@@ -17,11 +16,9 @@ const convertLicText = licText => {
     console.log('File created!!');
   }
 };
-
 const localTempalte = () => {
   console.log('get License with Local Templates');
   let licText = fs.readFileSync(`./lic-templates/${license}`).toString();
-  // console.log(licText);
   convertLicText(licText);
 };
 
@@ -39,14 +36,14 @@ a = '',
 dp = process.cwd() +sep+ configJson.default.fileName,
 nf = configJson.default.notForce,
 l = '';
-// console.log(__dirname);
-// console.log(process.cwd());
 const params = getFullParams();
-if(params.l && configJson.licenses[params.l.toUpperCase()]){
-  license = params.l.toUpperCase(),
-  url = configJson.licenses[license].url,
-  regY = new RegExp(configJson.licenses[license].regexp.y),
-  regA = new RegExp(configJson.licenses[license].regexp.a,'g');
+if(params.l){
+  let lic = params.l.trim();
+  if(configJson.licenses[lic]){
+    url = configJson.licenses[lic].url,
+    regY = new RegExp(configJson.licenses[lic].regexp.y),
+    regA = new RegExp(configJson.licenses[lic].regexp.a,'g');
+}
 }
 if(params.y) y = params.y.replace(/\'|\"/g,"").replace(/\/|\#|\\/g,'-');
 if(params.a) a = params.a.replace(/\'|\"/g,"");
@@ -55,7 +52,7 @@ if(params.f != undefined) nf = false;
 if(!useInternet)localTempalte();
 else getLicense(url)
       .then( licText =>{
-        fs.writeFileSync(`./lic-templates/${license}`,licText,'utf8');
+        fs.writeFileSync(`${__dirname}/../lic-templates/${license}`,licText,'utf8');
         console.log('get License with Internet');
         convertLicText(licText)
       })
