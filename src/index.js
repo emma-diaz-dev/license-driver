@@ -4,11 +4,13 @@ import fs from 'fs';
 import configJson from '../config/settings.json';
 import {sep} from 'path';
 import {jsonToPrettyTable} from 'showtables';
+import chalk from 'chalk';
 const replaceYear = (year,str) => str.replace(regY,year);
 const replaceName = (name,str) => str.replace(regA,name);
 const convertLicText = licText => {
   if(y && y.length>0)licText = replaceYear(y,licText);
   if(a && a.length>0)licText = replaceName(a,licText);
+  if(params.o != undefined)console.log(chalk.bgWhite.black(licText));
   if(nf && fs.existsSync(dp) && fs.statSync(dp).isFile()){
     console.log('File exist!!');
   }else{
@@ -17,8 +19,9 @@ const convertLicText = licText => {
   }
 };
 const localTempalte = () => {
-  console.log('get License with Local Templates');
-  let licText = fs.readFileSync(`./lic-templates/${license}`).toString();
+  console.log(chalk.green('get License from Local Templates'));
+  if(params.o != undefined)console.log(chalk.bgWhite.black(licText));
+  let licText = fs.readFileSync(`${__dirname}/../lic-templates/${license}`).toString();
   convertLicText(licText);
 };
 
@@ -29,19 +32,19 @@ const localTempalte = () => {
 //ni: not internet
 //l: license code, example => MIT, ISC, etc
 const params = getFullParams();
+let license = configJson.default.license,
+useInternet = configJson.default.useInternet,
+url = configJson.licenses[license].url,
+regY = new RegExp(configJson.licenses[license].regexp.y),
+regA = new RegExp(configJson.licenses[license].regexp.a,'g'),
+y = '',
+a = '',
+dp = process.cwd() +sep+ configJson.default.fileName,
+nf = configJson.default.notForce,
+l = '';
 if(params.h != undefined){
 jsonToPrettyTable(configJson.help,'blue','white');
 }else {
-  let license = configJson.default.license,
-  useInternet = configJson.default.useInternet,
-  url = configJson.licenses[license].url,
-  regY = new RegExp(configJson.licenses[license].regexp.y),
-  regA = new RegExp(configJson.licenses[license].regexp.a,'g'),
-  y = '',
-  a = '',
-  dp = process.cwd() +sep+ configJson.default.fileName,
-  nf = configJson.default.notForce,
-  l = '';
   if(params.l){
     let lic = params.l.trim();
     if(configJson.licenses[lic]){
@@ -62,7 +65,7 @@ jsonToPrettyTable(configJson.help,'blue','white');
   else getLicense(url)
         .then( licText =>{
           fs.writeFileSync(`${__dirname}/../lic-templates/${license}`,licText,'utf8');
-          console.log('get License with Internet');
+          console.log(chalk.green('get License from Internet'));
           convertLicText(licText)
         })
         .catch( err => {

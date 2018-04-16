@@ -5,7 +5,8 @@
     {"param":"-a","meaning":"author","example":"Juan Emmanuel Díaz"},
     {"param":"-dp","meaning":"destination path","example":"my-license/LICENSE"},
     {"param":"-ni","meaning":"not internet","example":"----"},
-    {"param":"-f","meaning":"force, delete actually LICENSE","example":"----"}
+    {"param":"-f","meaning":"force, delete the current LICENSE","example":"----"},
+    {"param":"-o","meaning":"output file result","example":"----"}
   ],
   "default":{
     "useInternet":true,
