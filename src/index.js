@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 import {getLicense} from './license-driver.js';
 import {getFullParams} from 'scriptparams';
 import fs from 'fs';
