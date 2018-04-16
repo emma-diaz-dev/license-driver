@@ -1,7 +1,7 @@
 # License OSI (Open Source Initiative)
 This lib is to add licenses (Text) in your projects.
 
-Using scraping with request (npm), we can get the license from [Open Source Initiative](opensource.org).
+Using scraping with request (npm), we can get the license from [Open Source Initiative](https://opensource.org).
 
 With license-driver is very easy add the file LICENSE.
 
