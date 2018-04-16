@@ -1,6 +1,6 @@
 {
   "name": "license-driver",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "description": "",
   "main": "lib/index.js",
   "scripts": {
@@ -16,8 +16,10 @@
     "url": "git+https://github.com/audio35444/license-driver.git"
   },
   "keywords": [
+    "license",
     "MIT",
-    "license"
+    "ISC",
+    "NTP"
   ],
   "author": "Juan Emmanuel Díaz <juaninsis@gmail.com>",
   "license": "MIT",
